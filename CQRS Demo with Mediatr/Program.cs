@@ -15,6 +15,17 @@ builder.Services.AddDbContext<ApplicationDBContext>(op => op.UseSqlServer(builde
 
 builder.Services.AddMediatR(typeof(Program));
 
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,6 +36,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Use CORS
+app.UseCors("AllowAngularApp");
 
 app.UseAuthorization();
 

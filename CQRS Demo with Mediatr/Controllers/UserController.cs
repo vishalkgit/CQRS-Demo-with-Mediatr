@@ -35,9 +35,11 @@ namespace CQRS_Demo_with_Mediatr.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserCommand command)
         {
-            var res = await _mediator.Send(command);
+            var updatedCommand = new UpdateUserCommand(id, command.username, command.age);
+
+            var res = await _mediator.Send(updatedCommand);
             return Ok(res);
         }
     }
